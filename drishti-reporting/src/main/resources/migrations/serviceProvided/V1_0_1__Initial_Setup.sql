@@ -122,3 +122,7 @@ CONSTRAINT anc_due_pkey PRIMARY KEY (entityid));
 
 CREATE TABLE report.icd10 (id SERIAL, ICD10_Chapter character varying(200) NOT NULL, ICD10_Code character varying(100) NOT NULL,ICD10_Name character varying(100) NOT NULL,can_select boolean NOT NULL,status boolean NOT NULL,
 CONSTRAINT icd10_pkey PRIMARY KEY (id));
+
+CREATE TABLE report.investigation (id SERIAL,service_group_name character varying(200) NOT NULL,investigation_name character varying(200) NOT NULL,is_active boolean NOT NULL,
+CONSTRAINT CK_SPT CHECK (type = 'procedures' OR type = 'radiology'OR type = 'laboratory'),
+CONSTRAINT investigations_pkey PRIMARY KEY (id));
