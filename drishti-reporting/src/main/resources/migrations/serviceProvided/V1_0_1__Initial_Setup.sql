@@ -79,3 +79,39 @@ CONSTRAINT health_centers_new_fkey1 FOREIGN KEY (country_name) REFERENCES report
 CONSTRAINT health_centers_new_fkey2 FOREIGN KEY (county_name) REFERENCES report.county_tb(id),
 CONSTRAINT health_centers_new_fkey3 FOREIGN KEY (district_name) REFERENCES report.district_new(id),
 CONSTRAINT health_centers_new_fkey4 FOREIGN KEY (subdistrict_name) REFERENCES report.subdistrict_new(id));
+
+CREATE TABLE report.user_masters_new (id SERIAL,user_role character varying(200) NOT NULL,user_id character varying(200) NOT NULL,name character varying(200) NOT NULL,password character varying(200) NOT NULL,confirm_password character varying(200) NOT NULL,phone_number character varying(20) NOT NULL,email character varying(200) NOT NULL,subcenter integer DEFAULT 0,villages character varying(200) NOT NULL,lastname character varying(200) NOT NULL,active boolean NOT NULL,hospital integer DEFAULT 0,county integer,district integer,subdistrict integer,country integer,
+CONSTRAINT user_masters_new_pkey PRIMARY KEY (id),
+CONSTRAINT user_masters_new_key UNIQUE (user_id),
+CONSTRAINT user_masters_new_fkey1 FOREIGN KEY (country) REFERENCES report.country_tb(id),
+CONSTRAINT user_masters_new_fkey2 FOREIGN KEY (county) REFERENCES report.county_tb(id),
+CONSTRAINT user_masters_new_fkey3 FOREIGN KEY (district) REFERENCES report.district_new(id),
+CONSTRAINT user_masters_new_fkey4 FOREIGN KEY (hospital) REFERENCES report.health_centers_new(id),
+CONSTRAINT user_masters_new_fkey5 FOREIGN KEY (subcenter) REFERENCES report.health_centers_new(id),
+CONSTRAINT user_masters_new_fkey6 FOREIGN KEY (subdistrict) REFERENCES report.subdistrict_new(id));
+
+CREATE TABLE report.app_configuration (id SERIAL,country_name integer NOT NULL,wife_age_min integer DEFAULT 0 NOT NULL,wife_age_max integer DEFAULT 0 NOT NULL,husband_age_min integer DEFAULT 0 NOT NULL,husband_age_max integer DEFAULT 0 NOT NULL,temperature_units character varying(20) NOT NULL,escalation_schedule integer NOT NULL,is_highrisk character varying(100),
+CONSTRAINT app_configuration_key UNIQUE (country_name),
+CONSTRAINT app_configuration_key UNIQUE (id),
+CONSTRAINT app_configuration_pkey PRIMARY KEY (id),
+CONSTRAINT app_configuration_fkey FOREIGN KEY (country_name) REFERENCES report.country_tb(id));
+
+CREATE TABLE report.directions (id SERIAL,directions character varying(200) NOT NULL,active boolean NOT NULL,
+CONSTRAINT directions_pkey PRIMARY KEY (id));
+
+CREATE TABLE report.dosage (id SERIAL, dosage character varying(100) NOT NULL,active boolean NOT NULL,
+CONSTRAINT dosage_pkey PRIMARY KEY (id));
+
+CREATE TABLE report.frequency (id SERIAL,active boolean NOT NULL,number_of_times character varying(100) NOT NULL,
+CONSTRAINT frequency_pkey PRIMARY KEY (id));
+
+CREATE TABLE report.drug_info (id SERIAL,drug_name character varying(100) NOT NULL,frequency integer,dosage integer,direction integer,active boolean NOT NULL,anc_conditions character varying(200) DEFAULT NULL::character varying,pnc_conditions character varying(200) DEFAULT NULL::character varying,child_illness character varying(200) DEFAULT NULL::character varying,
+CONSTRAINT drug_info_key UNIQUE (drug_name),
+CONSTRAINT drug_info_pkey PRIMARY KEY (id),
+CONSTRAINT drug_info_fkey FOREIGN KEY (direction) REFERENCES report.directions(id),
+CONSTRAINT drug_info_fkey1 FOREIGN KEY (dosage) REFERENCES report.dosage(id),
+CONSTRAINT drug_info_fkey2 FOREIGN KEY (frequency) REFERENCES report.frequency(id));
+
+CREATE TABLE report.form_fields (id SERIAL,form_name character varying(50),field1 character varying(50),field2 character varying(50),field3 character varying(50),field4 character varying(50),field5 character varying(50),country integer,
+CONSTRAINT form_fields_pkey PRIMARY KEY (id),
+CONSTRAINT form_fields_fkey FOREIGN KEY (country) REFERENCES report.country_tb(id));
