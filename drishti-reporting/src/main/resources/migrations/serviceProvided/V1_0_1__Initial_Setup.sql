@@ -115,3 +115,25 @@ CONSTRAINT drug_info_fkey2 FOREIGN KEY (frequency) REFERENCES report.frequency(i
 CREATE TABLE report.form_fields (id SERIAL,form_name character varying(50),field1 character varying(50),field2 character varying(50),field3 character varying(50),field4 character varying(50),field5 character varying(50),country integer,
 CONSTRAINT form_fields_pkey PRIMARY KEY (id),
 CONSTRAINT form_fields_fkey FOREIGN KEY (country) REFERENCES report.country_tb(id));
+
+CREATE TABLE report.anc_due (id SERIAL,entityid character varying(200) NOT NULL,patientnum character varying(200),anmnum character varying(200),visittype character varying(200),visitno integer,lmpdate character varying(200),womenname character varying(200),visitdate character varying(200),anmid character varying(200),
+CONSTRAINT anc_due_id_key UNIQUE (id),
+CONSTRAINT anc_due_pkey PRIMARY KEY (entityid));
+
+CREATE TABLE report.icd10 (id SERIAL, ICD10_Chapter character varying(200) NOT NULL, ICD10_Code character varying(100) NOT NULL,ICD10_Name character varying(100) NOT NULL,can_select boolean NOT NULL,status boolean NOT NULL,
+CONSTRAINT icd10_pkey PRIMARY KEY (id));
+
+CREATE TABLE report.investigation (id SERIAL,service_group_name character varying(200) NOT NULL,investigation_name character varying(200) NOT NULL,is_active boolean NOT NULL,
+CONSTRAINT CK_SPT CHECK (type = 'procedures' OR type = 'radiology'OR type = 'laboratory'),
+CONSTRAINT investigations_pkey PRIMARY KEY (id));
+
+CREATE TABLE report.poc_backup (id SERIAL,visitentityid character varying(100),entityidec character varying(100),anmid character varying(100),level character varying(35),clientversion character varying(35),serverversion character varying(35),visittype character varying(35),phc character varying(100),docid character(100),poc text,
+CONSTRAINT poc_backup_pkey PRIMARY KEY (id));
+
+CREATE TABLE report.poc_table (id SERIAL,visitentityid character varying(100) NOT NULL,entityidec character varying(100) NOT NULL,anmid character varying(100) NOT NULL,level character varying(35) NOT NULL,clientversion character varying(35) NOT NULL,serverversion character varying(35) NOT NULL,visittype character varying(35) NOT NULL,phc character varying(100) NOT NULL,pending character varying(300),docid character varying(50) DEFAULT NULL::character varying,timestamp timestamp with time zone,wifename character varying(200),
+CONSTRAINT poc_table_pkey PRIMARY KEY (id));
+
+CREATE TABLE report.visit_configuration (id SERIAL,anc_visit1_from_week integer,anc_visit1_to_week integer,anc_visit2_from_week integer,anc_visit2_to_week integer,anc_visit3_from_week integer,anc_visit3_to_week integer,anc_visit4_from_week integer,anc_visit4_to_week integer,
+CONSTRAINT visit_configuration_pkey PRIMARY KEY (id));
+
+CREATE TABLE report.ec_reg (id SERIAL,entityid character varying(200) NOT NULL,phonenumber character varying(200) NOT NULL);
