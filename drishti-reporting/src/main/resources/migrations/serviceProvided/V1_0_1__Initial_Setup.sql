@@ -124,5 +124,16 @@ CREATE TABLE report.icd10 (id SERIAL, ICD10_Chapter character varying(200) NOT N
 CONSTRAINT icd10_pkey PRIMARY KEY (id));
 
 CREATE TABLE report.investigation (id SERIAL,service_group_name character varying(200) NOT NULL,investigation_name character varying(200) NOT NULL,is_active boolean NOT NULL,
-CONSTRAINT CK_SPT CHECK (type = 'procedures' OR type = 'radiology'OR type = 'laboratory'),
+CONSTRAINT CK_SPT CHECK (service_group_name = 'procedures' OR service_group_name = 'radiology'OR service_group_name = 'laboratory'),
 CONSTRAINT investigations_pkey PRIMARY KEY (id));
+
+CREATE TABLE report.poc_backup (id SERIAL,visitentityid character varying(100),entityidec character varying(100),anmid character varying(100),level character varying(35),clientversion character varying(35),serverversion character varying(35),visittype character varying(35),phc character varying(100),docid character(100),poc text,
+CONSTRAINT poc_backup_pkey PRIMARY KEY (id));
+
+CREATE TABLE report.poc_table (id SERIAL,visitentityid character varying(100) NOT NULL,entityidec character varying(100) NOT NULL,anmid character varying(100) NOT NULL,level character varying(35) NOT NULL,clientversion character varying(35) NOT NULL,serverversion character varying(35) NOT NULL,visittype character varying(35) NOT NULL,phc character varying(100) NOT NULL,pending character varying(300),docid character varying(50) DEFAULT NULL::character varying,timestamp timestamp with time zone,wifename character varying(200),
+CONSTRAINT poc_table_pkey PRIMARY KEY (id));
+
+CREATE TABLE report.visit_configuration (id SERIAL,anc_visit1_from_week integer,anc_visit1_to_week integer,anc_visit2_from_week integer,anc_visit2_to_week integer,anc_visit3_from_week integer,anc_visit3_to_week integer,anc_visit4_from_week integer,anc_visit4_to_week integer,
+CONSTRAINT visit_configuration_pkey PRIMARY KEY (id));
+
+CREATE TABLE report.ec_reg (id SERIAL,entityid character varying(200) NOT NULL,phonenumber character varying(200) NOT NULL);
