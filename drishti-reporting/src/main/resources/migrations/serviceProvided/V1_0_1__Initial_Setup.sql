@@ -52,3 +52,30 @@ CONSTRAINT county_tb_key UNIQUE (county_name),
 CONSTRAINT county_tb_pkey PRIMARY KEY (id),
 CONSTRAINT county_tb_fkey FOREIGN KEY (country_name) REFERENCES report.country_tb(id));
 
+CREATE TABLE report.district_new (id SERIAL,country_name integer NOT NULL,county_name integer NOT NULL,district_name character varying(100) NOT NULL,   active boolean NOT NULL,
+CONSTRAINT district_new_key UNIQUE (district_name),
+CONSTRAINT district_new_pkey PRIMARY KEY (id),
+CONSTRAINT district_new_fkey FOREIGN KEY (country_name) REFERENCES report.country_tb(id),
+CONSTRAINT district_new_fkey1 FOREIGN KEY (county_name) REFERENCES report.county_tb(id));
+
+CREATE TABLE report.subdistrict_new (id SERIAL,subdistrict character varying(100),active boolean NOT NULL,country integer NOT NULL,county integer NOT NULL,district integer NOT NULL,
+CONSTRAINT subdistrict_new_pkey PRIMARY KEY (id),
+CONSTRAINT subdistrict_new_key UNIQUE (subdistrict),
+CONSTRAINT subdistrict_new_fkey FOREIGN KEY (country) REFERENCES report.country_tb(id),
+CONSTRAINT subdistrict_new_fkey1 FOREIGN KEY (county) REFERENCES report.county_tb(id),
+CONSTRAINT subdistrict_new_fkey2 FOREIGN KEY (district) REFERENCES report.district_new(id));
+
+CREATE TABLE report.location_new (id SERIAL,location character varying(100),active boolean NOT NULL,country integer NOT NULL,county integer NOT NULL,district integer NOT NULL,subdistrict integer NOT NULL,
+CONSTRAINT location_new_pkey PRIMARY KEY (id),
+CONSTRAINT location_new_fkey1 FOREIGN KEY (country) REFERENCES report.country_tb(id),
+CONSTRAINT location_new_fkey2 FOREIGN KEY (county) REFERENCES report.county_tb(id),
+CONSTRAINT location_new_fkey3 FOREIGN KEY (district) REFERENCES report.district_new(id),
+CONSTRAINT location_new_fkey4 FOREIGN KEY (subdistrict) REFERENCES report.subdistrict_new(id));
+
+CREATE TABLE report.health_centers_new (id SERIAL,hospital_name character varying(200) DEFAULT NULL::character varying NOT NULL,hospital_type character varying(200) DEFAULT NULL::character varying NOT NULL,hospital_address character varying(200) NOT NULL,parent_hospital character varying(200) DEFAULT ' '::character varying,villages character varying(200),active boolean NOT NULL,country_name integer,county_name integer,district_name integer,subdistrict_name integer,
+CONSTRAINT health_centers_new_key UNIQUE (hospital_name),
+CONSTRAINT health_centers_new_key1 UNIQUE (id),
+CONSTRAINT health_centers_new_fkey1 FOREIGN KEY (country_name) REFERENCES report.country_tb(id),
+CONSTRAINT health_centers_new_fkey2 FOREIGN KEY (county_name) REFERENCES report.county_tb(id),
+CONSTRAINT health_centers_new_fkey3 FOREIGN KEY (district_name) REFERENCES report.district_new(id),
+CONSTRAINT health_centers_new_fkey4 FOREIGN KEY (subdistrict_name) REFERENCES report.subdistrict_new(id));
