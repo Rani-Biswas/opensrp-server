@@ -111,3 +111,14 @@ CONSTRAINT drug_info_pkey PRIMARY KEY (id),
 CONSTRAINT drug_info_fkey FOREIGN KEY (direction) REFERENCES report.directions(id),
 CONSTRAINT drug_info_fkey1 FOREIGN KEY (dosage) REFERENCES report.dosage(id),
 CONSTRAINT drug_info_fkey2 FOREIGN KEY (frequency) REFERENCES report.frequency(id));
+
+CREATE TABLE report.form_fields (id SERIAL,form_name character varying(50),field1 character varying(50),field2 character varying(50),field3 character varying(50),field4 character varying(50),field5 character varying(50),country integer,
+CONSTRAINT form_fields_pkey PRIMARY KEY (id),
+CONSTRAINT form_fields_fkey FOREIGN KEY (country) REFERENCES report.country_tb(id));
+
+CREATE TABLE report.anc_due (id SERIAL,entityid character varying(200) NOT NULL,patientnum character varying(200),anmnum character varying(200),visittype character varying(200),visitno integer,lmpdate character varying(200),womenname character varying(200),visitdate character varying(200),anmid character varying(200),
+CONSTRAINT anc_due_id_key UNIQUE (id),
+CONSTRAINT anc_due_pkey PRIMARY KEY (entityid));
+
+CREATE TABLE report.icd10 (id SERIAL, ICD10_Chapter character varying(200) NOT NULL, ICD10_Code character varying(100) NOT NULL,ICD10_Name character varying(100) NOT NULL,can_select boolean NOT NULL,status boolean NOT NULL,
+CONSTRAINT icd10_pkey PRIMARY KEY (id));
