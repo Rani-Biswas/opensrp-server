@@ -43,3 +43,12 @@ CREATE TABLE report.service_provided (ID SERIAL, service_provider INTEGER NOT NU
   CONSTRAINT FK_SP_DI_ID FOREIGN KEY (indicator) REFERENCES report.dim_indicator (ID),
   CONSTRAINT FK_SP_DD_ID FOREIGN KEY (date_) REFERENCES report.dim_date (ID),
   CONSTRAINT FK_SP_DL_ID FOREIGN KEY (location) REFERENCES report.dim_location (ID));
+
+CREATE TABLE report.country_tb (id SERIAL,country_name character varying(100) NOT NULL,country_code character varying(10) NOT NULL,active boolean,
+CONSTRAINT country_tb_a PRIMARY KEY (id));
+
+CREATE TABLE report.county_tb (id SERIAL,country_name integer NOT NULL,county_name character varying(100),active boolean NOT NULL,
+CONSTRAINT county_tb_key UNIQUE (county_name),
+CONSTRAINT county_tb_pkey PRIMARY KEY (id),
+CONSTRAINT county_tb_fkey FOREIGN KEY (country_name) REFERENCES report.country_tb(id));
+
