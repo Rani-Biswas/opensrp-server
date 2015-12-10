@@ -89,5 +89,70 @@ public class AllFormSubmissions extends MotechBaseRepository<FormSubmission> {
         }
         logger.info("********** query***"+query);
         return db.queryView(query, FormSubmission.class);
+      
     }
+    
+   @View (
+            name = "by_id",
+            map = "function(doc) { if(doc.entityId ) {emit(doc.entityId,[doc.formName,doc.formInstance,doc.anmId,doc.serverVersion])} }")
+    public List<FormSubmission> findbyId() {
+        return db.queryView(createQuery("by_id")
+                .includeDocs(true),
+                FormSubmission.class);
+   }
+    
+    @View(
+           name = "all",
+            map = "function(doc) { if(doc.type === 'FormSubmission') {emit(doc.instanceId, doc._id)} }")
+    public List<FormSubmission> findall() {
+        return db.queryView(createQuery("all")
+                .includeDocs(true),
+                FormSubmission.class);
+   }
+    
+   @View(
+        name = "by_EntityId",
+          map = "function(doc) { if(doc.entityId ) {emit(doc.entityId,[doc.formName,doc.formInstance,doc.anmId,doc.serverVersion])} }")
+    public List<FormSubmission> findbyEntity() {
+        return db.queryView(createQuery("by_EntityId")
+                .includeDocs(true),
+                FormSubmission.class);
+    }
+      
+    @View(
+            name = "by_instanceId",
+            map = "function(doc) { if(doc.type === 'FormSubmission' && doc.instanceId) {emit(doc.instanceId, doc._id)} }")
+    public List<FormSubmission> findbyInstanceId() {
+        return db.queryView(createQuery("by_instanceId")
+                .includeDocs(true),
+                FormSubmission.class);
+    }
+    
+    @View(
+            name = "by_EntityId1",
+            map = "function(doc) {if(doc.entityId) {emit(doc.entityId,[doc.serverVersion,doc.formName])} }")
+    public List<FormSubmission> findbyentityId1() {
+        return db.queryView(createQuery("by_EntityId1")
+                .includeDocs(true),
+                FormSubmission.class);
+    }
+   
+    @View(
+            name = "by_regId",
+            map = "function(doc) { for(id in doc.formInstance.form.fields){ if(doc.formInstance.form.fields[id].name ==='regId'){if(doc.formInstance.form.fields[id].value){emit(doc.entityId,[doc.formName,doc.formInstance,doc.anmId,doc.serverVersion])} }}}")
+    public List<FormSubmission> findbyregId() {
+        return db.queryView(createQuery("by_regId")
+                .includeDocs(true),
+                FormSubmission.class);
+    }
+   
+    @View(
+            name = "checkEdit",
+            map = "function(doc){if((doc.formName==='anc_reg_edit' ||doc.formName==='pnc_reg_edit'||doc.formName==='child_reg_edit') && doc.entityId){emit(doc.entityId,[doc.formName,doc.formInstance])}}")
+    public List<FormSubmission> findcheckEdit() {
+        return db.queryView(createQuery("checkEdit")
+                .includeDocs(true),
+                FormSubmission.class);
+        
+   }
 }
