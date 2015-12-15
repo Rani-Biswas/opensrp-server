@@ -9,6 +9,7 @@ public class MonthSummaryDatumTest {
  
 	private MonthSummaryDatum monthsummary;
 	
+	
 	@Before
 	public void setUp(){
 		monthsummary = new MonthSummaryDatum();
