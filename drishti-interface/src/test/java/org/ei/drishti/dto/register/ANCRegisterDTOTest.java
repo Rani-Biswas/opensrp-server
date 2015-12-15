@@ -1,5 +1,7 @@
 package org.ei.drishti.dto.register;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,8 +16,10 @@ public class ANCRegisterDTOTest {
 	
 	@Test
 	public void equalsTest(){
-		Object o = null;
-		ancRegisterDTO.equals(o);
+		Object o = false;
+		boolean w=ancRegisterDTO.equals(o);
+		boolean a=false;
+		assertEquals(w,a);
 	}
 	
 	@Test
